@@ -1,6 +1,6 @@
 {
-  "name": "@nodegui/packer",
-  "version": "1.5.0",
+  "name": "@dmclmc/packer-fork",
+  "version": "1.5.1",
   "files": [
     "dist",
     "template",
