@@ -54,6 +54,7 @@ const runLinuxDeployQt = async (appName: string, buildDir: string) => {
       `qode`,
       "-verbose=2",
       "-bundle-non-qt-libs",
+      "-unsupported-allow-new-glibc",
       "-appimage",
       `-qmake=${path.resolve(qtHome, "bin", "qmake")}`,
       ...addonCommands(allAddons),

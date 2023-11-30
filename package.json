@@ -1,5 +1,5 @@
 {
-  "name": "@dmclmc/packer-fork",
+  "name": "@aiorosdev/nodegui-packer",
   "version": "1.5.1",
   "files": [
     "dist",
@@ -17,7 +17,7 @@
     "postinstall": "node ./scripts/setupBinaries.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "atulanand94@gmail.com",
+  "author": "Aioros",
   "license": "MIT",
   "devDependencies": {
     "@nodegui/nodegui": "^0.61.0",

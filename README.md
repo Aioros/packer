@@ -1,3 +1,5 @@
+Fork of https://github.com/nodegui/packer to allow Linux packaging on newer machines.
+
 # Packer 📦
 
 Packer is a npm module that allows you to package apps built with NodeGui or React NodeGui into a standalone executable. Packer works on Mac, Windows and Linux
