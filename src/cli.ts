@@ -20,5 +20,5 @@ if (program.init) {
 }
 
 if (program.pack) {
-  packer.pack(options.pack, options.noAppimage);
+  packer.pack(options.pack, options.appimage);
 }

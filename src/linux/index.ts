@@ -43,7 +43,7 @@ const addonCommands = (addonPaths: string[]): string[] => {
   }, []);
 };
 
-const runLinuxDeployQt = async (appName: string, buildDir: string, noAppimage: boolean) => {
+const runLinuxDeployQt = async (appName: string, buildDir: string, appimage: boolean) => {
   const distPath = path.resolve(buildDir, "dist");
   const allAddons = getAllNodeAddons(distPath);
   const LD_LIBRARY_PATH = `${qtHome}/lib:${process.env.LD_LIBRARY_PATH}`;
@@ -57,7 +57,7 @@ const runLinuxDeployQt = async (appName: string, buildDir: string, noAppimage: b
     `-qmake=${path.resolve(qtHome, "bin", "qmake")}`,
     ...addonCommands(allAddons),
   ];
-  if (noAppimage) {
+  if (!appimage) {
     args = args.filter(a => a != "-appimage");
   }
 
