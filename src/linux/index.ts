@@ -43,22 +43,27 @@ const addonCommands = (addonPaths: string[]): string[] => {
   }, []);
 };
 
-const runLinuxDeployQt = async (appName: string, buildDir: string) => {
+const runLinuxDeployQt = async (appName: string, buildDir: string, noAppimage: boolean) => {
   const distPath = path.resolve(buildDir, "dist");
   const allAddons = getAllNodeAddons(distPath);
   const LD_LIBRARY_PATH = `${qtHome}/lib:${process.env.LD_LIBRARY_PATH}`;
 
+  let args = [
+    `qode`,
+    "-verbose=2",
+    "-bundle-non-qt-libs",
+    "-unsupported-allow-new-glibc",
+    "-appimage",
+    `-qmake=${path.resolve(qtHome, "bin", "qmake")}`,
+    ...addonCommands(allAddons),
+  ];
+  if (noAppimage) {
+    args = args.filter(a => a != "-appimage");
+  }
+
   const linuxDeployQt = spawn(
     linuxDeployQtBin,
-    [
-      `qode`,
-      "-verbose=2",
-      "-bundle-non-qt-libs",
-      "-unsupported-allow-new-glibc",
-      "-appimage",
-      `-qmake=${path.resolve(qtHome, "bin", "qmake")}`,
-      ...addonCommands(allAddons),
-    ],
+    args,
     { cwd: buildDir, env: { ...process.env, LD_LIBRARY_PATH } }
   );
 
@@ -93,7 +98,7 @@ export const init = async (appName: string) => {
   await fs.writeJSON(configFile, config);
 };
 
-export const pack = async (distPath: string) => {
+export const pack = async (distPath: string, noAppimage: boolean) => {
   const config = await fs.readJSON(
     path.resolve(deployDirectory, "config.json")
   );
@@ -112,8 +117,10 @@ export const pack = async (distPath: string) => {
   console.log(`copying dist`);
   await copyAppDist(distPath, buildAppPackage);
   console.log(`running linuxdeployqt`);
-  await runLinuxDeployQt(appName, buildAppPackage);
-  console.log(
-    `Build successful. Find the AppImage at ${buildAppPackage}. Look for an executable file with extension .AppImage`
-  );
+  await runLinuxDeployQt(appName, buildAppPackage, noAppimage);
+  let finalLog = "Build successful.";
+  if (!noAppimage) {
+    finalLog += ` Find the AppImage at ${buildAppPackage}. Look for an executable file with extension .AppImage`;
+  }
+  console.log(finalLog);
 };

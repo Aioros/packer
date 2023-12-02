@@ -6,7 +6,8 @@ import { getPacker } from "./index";
 
 program
   .option("-i, --init <name>", "Creates initial deploy files")
-  .option("-p, --pack <distPath>", "Packs the app into deployable");
+  .option("-p, --pack <distPath>", "Packs the app into deployable")
+  .option("-n, --no-appimage", "Skip AppImage creation on Linux");
 
 program.parse(process.argv);
 const options = program.opts();
@@ -19,5 +20,5 @@ if (program.init) {
 }
 
 if (program.pack) {
-  packer.pack(options.pack);
+  packer.pack(options.pack, options.noAppimage);
 }
