@@ -98,7 +98,7 @@ export const init = async (appName: string) => {
   await fs.writeJSON(configFile, config);
 };
 
-export const pack = async (distPath: string, noAppimage: boolean) => {
+export const pack = async (distPath: string, appimage: boolean) => {
   const config = await fs.readJSON(
     path.resolve(deployDirectory, "config.json")
   );
@@ -117,9 +117,9 @@ export const pack = async (distPath: string, noAppimage: boolean) => {
   console.log(`copying dist`);
   await copyAppDist(distPath, buildAppPackage);
   console.log(`running linuxdeployqt`);
-  await runLinuxDeployQt(appName, buildAppPackage, noAppimage);
+  await runLinuxDeployQt(appName, buildAppPackage, appimage);
   let finalLog = "Build successful.";
-  if (!noAppimage) {
+  if (!appimage) {
     finalLog += ` Find the AppImage at ${buildAppPackage}. Look for an executable file with extension .AppImage`;
   }
   console.log(finalLog);
